@@ -4,11 +4,11 @@ import (
 	"strings"
 )
 
-func (d *dom) GetTags(tagname ...string) []tag {
+func (d *Dom) GetTags(tagname ...string) []Tag {
 	if len(tagname) < 1 {
 		return d.tags
 	}
-	var tags []tag
+	var tags []Tag
 	for _, N := range tagname {
 		for i, n := range d.tags {
 			if n.tagname == N {
@@ -20,8 +20,8 @@ func (d *dom) GetTags(tagname ...string) []tag {
 	return tags
 }
 
-func (d *dom) GetByAttr(attr, value string) []tag {
-	var tags []tag
+func (d *Dom) GetByAttr(attr, value string) []Tag {
+	var tags []Tag
 
 	for _, n := range d.tags {
 		if strings.Contains(n.tagcontent, attr+`="`+value+`"`) || strings.Contains(n.tagcontent, attr+`=`+value+` `) {

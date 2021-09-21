@@ -2,19 +2,19 @@ package sitescraper
 
 import "strings"
 
-func (t *tag) InnerHTML() string {
+func (t *Tag) InnerHTML() string {
 	return t.innerHTML
 }
 
-func (t *tag) Text() string {
+func (t *Tag) Text() string {
 	return getText(t.innerHTML)
 }
 
-func (t *tag) GetTagName() string {
+func (t *Tag) GetTagName() string {
 	return t.tagname
 }
 
-func (t *tag) GetAttr(attr string) string {
+func (t *Tag) GetAttr(attr string) string {
 	var out string
 
 	if strings.Contains(t.tagcontent, attr+"=") {

@@ -5,13 +5,13 @@ import (
 )
 
 //Public-Function to Call the HTML-Parser
-func ParseHTML(html string) dom {
+func ParseHTML(html string) Dom {
 	return fetch(html)
 }
 
 //The private functions handle the parsing process
-func fetch(html string) dom {
-	var dm dom
+func fetch(html string) Dom {
+	var dm Dom
 	for {
 		if !strings.Contains(html, "<") {
 			break
@@ -23,7 +23,7 @@ func fetch(html string) dom {
 
 		//Check if string behing "<" is a valid tagname
 		if checkTagname(tagname) {
-			dm.tags = append(dm.tags, tag{tagname, tagcontent, getInnerHTML(tagname, html)})
+			dm.tags = append(dm.tags, Tag{tagname, tagcontent, getInnerHTML(tagname, html)})
 		}
 	}
 
@@ -31,8 +31,8 @@ func fetch(html string) dom {
 	return dm
 }
 
-func clearClosingTags(d dom) dom {
-	var out dom
+func clearClosingTags(d Dom) Dom {
+	var out Dom
 
 	for _, n := range d.tags {
 		if !strings.Contains(n.tagcontent, "</") {

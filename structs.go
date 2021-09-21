@@ -1,10 +1,10 @@
 package sitescraper
 
-type dom struct {
-	tags []tag
+type Dom struct {
+	tags []Tag
 }
 
-type tag struct {
+type Tag struct {
 	tagname    string
 	tagcontent string
 	innerHTML  string
