@@ -1,7 +1,7 @@
 package sitescraper
 
 type Dom struct {
-	tags []Tag
+	Tag []Tag
 }
 
 type Tag struct {

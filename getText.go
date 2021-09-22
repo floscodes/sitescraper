@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func getText(innerhtml string) string {
+func getText(tagname, innerhtml string) string {
 
 	if !strings.Contains(innerhtml, ">") {
 		return innerhtml
@@ -12,6 +12,11 @@ func getText(innerhtml string) string {
 
 	if !strings.Contains(innerhtml, "<") {
 		return innerhtml
+	}
+
+	checkbreak := checkBreak(tagname, innerhtml)
+	if checkbreak {
+		innerhtml = strings.ReplaceAll(innerhtml, "<br>", "|{}|")
 	}
 
 	firstpart := innerhtml[:strings.Index(innerhtml, "<")]
@@ -69,5 +74,10 @@ func getText(innerhtml string) string {
 
 	out := firstpart + " " + strings.Join(parts1, "") + " " + strings.Join(parts2sorted, "") + " " + lastpart
 
+	if checkbreak {
+		out = strings.ReplaceAll(out, "|{}|", "<br>")
+		out = strings.TrimRight(out, "<br>")
+		out = strings.TrimLeft(out, "<br>")
+	}
 	return strings.Trim(out, " ")
 }

@@ -4,25 +4,53 @@ import "strings"
 
 func getInnerHTML(tagname, html string) string {
 
-	if !strings.Contains(html, "</"+tagname) {
-		return ""
+	firstpart := html[:strings.Index(html, "</"+tagname+">")+len("</"+tagname+">")]
+
+	checkbreak := checkBreak(tagname, firstpart)
+	if checkbreak {
+		firstpart = strings.ReplaceAll(firstpart, "<br", "{||}")
 	}
 
-	innerHTML := html[:strings.Index(html, "</"+tagname)]
-	lastpart := html[:strings.LastIndex(html, "</"+tagname)]
-	appearance := strings.Count(innerHTML, "<"+tagname)
+	appearance := strings.Count(firstpart, "<"+tagname) + 1
 
 	if appearance < 1 {
-		return innerHTML
-	} else {
-		var parts []string
-
-		for x := 0; x < appearance; x++ {
-			parts = append(parts, html[:strings.Index(html, "</"+tagname)])
-			html = html[:strings.LastIndex(html, "</"+tagname)]
-		}
-
-		return strings.Join(parts, "") + lastpart
+		return firstpart
 	}
 
+	var secondparts []string
+
+	x := 0
+	for {
+		if x == appearance {
+			break
+		}
+
+		secondparts = append(secondparts, html[:strings.Index(html, "</"+tagname+">")+len("</"+tagname+">")])
+		html = html[strings.Index(html, "</"+tagname+">")+len("</"+tagname+">"):]
+
+		x = x + 1
+
+	}
+
+	out := strings.Join(secondparts, "")
+
+	if checkbreak {
+		out = strings.ReplaceAll(out, "{||}", "<br>")
+	}
+
+	if !strings.Contains(out, "</"+tagname+">") {
+		return out
+	}
+
+	return out[:strings.LastIndex(out, "</"+tagname+">")]
+
+}
+
+func checkBreak(tagname, firstpart string) bool {
+	if tagname == "b" {
+		if strings.Contains(firstpart, "<br") {
+			return true
+		}
+	}
+	return false
 }
