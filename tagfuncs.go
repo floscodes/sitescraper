@@ -9,7 +9,7 @@ func (t Tag) GetInnerHTML() string {
 
 //Returns pure Text inside a Tag leaving out all nested HTML-Tags and their content
 func (t Tag) GetText() string {
-	return getText(t.GetTagName(), t.innerHTML)
+	return getText(t.tagname, t.innerHTML)
 }
 
 //Returns the name of the Tag as string

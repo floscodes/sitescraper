@@ -57,3 +57,28 @@ func (d Dom) AttrValue(attrvalue ...string) Dom {
 	return dm
 
 }
+
+//Returns whole innerHTML of all Tags of the Dom or filtered Dom as string
+func (d Dom) GetInnerHTML() string {
+	var s []string
+
+	for _, tag := range d.Tag {
+		s = append(s, tag.innerHTML)
+		s = append(s, " ")
+	}
+
+	return strings.Join(s, "")
+}
+
+//Returns the whole Text of all Tags of the Dom or filtered Dom as string
+func (d Dom) GetText() string {
+
+	var s []string
+
+	for _, tag := range d.Tag {
+		s = append(s, getText(tag.tagname, tag.innerHTML))
+		s = append(s, " ")
+	}
+
+	return strings.Join(s, "")
+}
