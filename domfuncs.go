@@ -82,3 +82,17 @@ func (d Dom) GetText() string {
 
 	return strings.Join(s, "")
 }
+
+//Returns the Attribute-Value of all Tags of the Dom filtered by the given Attribute-Name as string
+func (d Dom) GetAttrValue(attrname string) string {
+
+	var s []string
+
+	for _, tag := range d.Tag {
+		s = append(s, tag.GetAttrValue(attrname))
+		s = append(s, " ")
+	}
+
+	return strings.Join(s, "")
+
+}
