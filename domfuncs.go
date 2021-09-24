@@ -66,7 +66,6 @@ func (d Dom) GetInnerHTML() string {
 		s = append(s, tag.innerHTML)
 		s = append(s, " ")
 	}
-
 	return strings.Join(s, "")
 }
 

@@ -1,6 +1,8 @@
 package sitescraper
 
-import "strings"
+import (
+	"strings"
+)
 
 func getInnerHTML(tagname, html string) string {
 
@@ -14,6 +16,9 @@ func getInnerHTML(tagname, html string) string {
 	appearance := strings.Count(firstpart, "<"+tagname)
 
 	if appearance < 1 {
+		if strings.LastIndex(firstpart, "</"+tagname+">") != -1 {
+			firstpart = firstpart[:strings.LastIndex(firstpart, "</"+tagname+">")]
+		}
 		return firstpart
 	}
 
