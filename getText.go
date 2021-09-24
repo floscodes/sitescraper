@@ -31,6 +31,9 @@ func getText(tagname, innerhtml string) string {
 			break
 		} else {
 			middle = middle[1:]
+			if !strings.Contains(middle, "<") {
+				break
+			}
 			parts1 = append(parts1, "<"+middle[:strings.Index(middle, "<")])
 			middle = middle[strings.Index(middle, "<"):]
 		}
