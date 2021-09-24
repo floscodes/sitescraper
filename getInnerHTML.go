@@ -11,17 +11,20 @@ func getInnerHTML(tagname, html string) string {
 		firstpart = strings.ReplaceAll(firstpart, "<br", "{||}")
 	}
 
-	appearance := strings.Count(firstpart, "<"+tagname) + 1
+	appearance := strings.Count(firstpart, "<"+tagname)
 
 	if appearance < 1 {
 		return firstpart
 	}
 
+	//Cut away firstpart
+	html = html[strings.Index(html, "</"+tagname+">")+len("</"+tagname+">"):]
+
 	var secondparts []string
 
 	x := 0
 	for {
-		if x == appearance {
+		if x > appearance {
 			break
 		}
 
@@ -31,18 +34,18 @@ func getInnerHTML(tagname, html string) string {
 		x = x + 1
 
 	}
-
-	out := strings.Join(secondparts, "")
+	//firstpart added
+	out := firstpart + strings.Join(secondparts, "")
 
 	if checkbreak {
 		out = strings.ReplaceAll(out, "{||}", "<br>")
 	}
 
-	if !strings.Contains(out, "</"+tagname+">") {
-		return out
+	if strings.LastIndex(out, "</"+tagname+">") != -1 {
+		out = out[:strings.LastIndex(out, "</"+tagname+">")]
 	}
 
-	return out[:strings.LastIndex(out, "</"+tagname+">")]
+	return out
 
 }
 
