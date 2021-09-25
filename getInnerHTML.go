@@ -33,6 +33,10 @@ func getInnerHTML(tagname, html string) string {
 			break
 		}
 
+		if len(html) < 1 {
+			break
+		}
+
 		secondparts = append(secondparts, html[:strings.Index(html, "</"+tagname+">")+len("</"+tagname+">")])
 		html = html[strings.Index(html, "</"+tagname+">")+len("</"+tagname+">"):]
 
