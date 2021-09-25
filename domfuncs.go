@@ -80,7 +80,7 @@ func (d Dom) attrValue(attrvalue ...string) Dom {
 
 	for _, N := range attrvalue {
 		for _, n := range d.Tag {
-			if strings.Contains(n.tagcontent, `="`+N+`"`) || strings.Contains(n.tagcontent, `=`+N+` `) || strings.Contains(n.tagcontent, `=`+N+`>`) {
+			if strings.Contains(n.tagcontent, `="`+N+`"`) || strings.Contains(n.tagcontent, `=`+N+` `) || strings.Contains(n.tagcontent, `=`+N+`>`) || strings.Contains(n.tagcontent, `='`+N+`'>`) || strings.Contains(n.tagcontent, `='`+N+`'`) {
 				tags = append(tags, n)
 			}
 
@@ -164,6 +164,21 @@ func (d Dom) GetAttrValue(attrname string) string {
 		s = append(s, tag.GetAttrValue(attrname))
 	}
 
-	return strings.Join(s, " ")
+	var cleared []string
+
+	for _, y := range s {
+		in := false
+		for _, x := range cleared {
+			if y == x {
+				in = true
+			}
+		}
+
+		if !in {
+			cleared = append(cleared, y)
+		}
+	}
+
+	return strings.Join(cleared, " ")
 
 }

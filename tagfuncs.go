@@ -38,5 +38,9 @@ func (t Tag) GetAttrValue(attr string) string {
 		out = out[:strings.Index(out, " ")]
 	}
 
+	if strings.Contains(out, `'`) {
+		out = strings.ReplaceAll(out, `'`, "")
+	}
+
 	return out
 }
