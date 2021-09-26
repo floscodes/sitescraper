@@ -4,14 +4,11 @@ import (
 	"strings"
 )
 
-//Filters the Dom by given parameters in the following order: tagname, attribute-name, attribute-value
-//e.g. `d.Filter("div", "class", "main")`
-//You can also leave one argument out by typing `d.Filter("", "class", "main")` or `d.Filter("*", "class", "main")`
-//a filtered Dom can be filtered again with Filter()
-//e.g. `d.Filter("", "class", "main").Filter("span")`
 func (d Dom) Filter(filter ...string) Dom {
 
-	d = ParseHTML(d.string())
+	if !d.isparsed {
+		d = ParseHTML(d.string())
+	}
 
 	if len(filter) < 1 {
 		return d
@@ -33,7 +30,7 @@ func (d Dom) Filter(filter ...string) Dom {
 	if filter[2] != "" && filter[2] != "*" {
 		d = d.attrValue(filter[2])
 	}
-
+	d.isparsed = false
 	return d
 }
 

@@ -1,7 +1,8 @@
 package sitescraper
 
 type Dom struct {
-	Tag []Tag
+	Tag      []Tag
+	isparsed bool
 }
 
 type Tag struct {

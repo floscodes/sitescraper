@@ -48,6 +48,7 @@ func fetch(html string) Dom {
 	}
 
 	dm = clearClosingTags(dm)
+	dm.isparsed = true
 	return dm
 }
 
