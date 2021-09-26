@@ -4,6 +4,12 @@ import (
 	"strings"
 )
 
+//Filters the Dom by given parameters in the following order:
+//Filter(tagname, attribute-name, attribute-value).
+//For Example: d.Filter("div", "class", "main")
+//You can also leave one argument out by typing d.Filter("", "class", "main") or d.Filter("*", "class", "main").
+//Or you can just filter the Dom by tagname using d.Filter("div") or by tagname and attribute using d.Filter("div", "class").
+//A filtered Dom can be filtered again with Filter() e.g. d.Filter("", "class", "main").Filter("span")
 func (d Dom) Filter(filter ...string) Dom {
 
 	if !d.isparsed {
