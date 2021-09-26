@@ -12,13 +12,14 @@ import (
 //A filtered Dom can be filtered again with Filter() e.g. d.Filter("", "class", "main").Filter("span")
 func (d Dom) Filter(filter ...string) Dom {
 
+	if len(filter) < 1 {
+		return d
+	}
+
 	if !d.isparsed {
 		d = ParseHTML(d.string())
 	}
 
-	if len(filter) < 1 {
-		return d
-	}
 	if filter[0] != "" && filter[0] != "*" {
 		d = d.tags(filter[0])
 	}
