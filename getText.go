@@ -61,6 +61,9 @@ func getText(tagname, innerhtml string) string {
 
 	}
 
+	cmiddle := make(chan string)
+	go getMiddle(middle, cmiddle)
+
 	var parts2sorted []string
 	x := len(parts2) - 1
 	for {
@@ -75,7 +78,9 @@ func getText(tagname, innerhtml string) string {
 
 	}
 
-	out := firstpart + " " + strings.Join(parts1, "") + " " + strings.Join(parts2sorted, "") + " " + lastpart
+	defer close(cmiddle)
+
+	out := firstpart + " " + strings.Join(parts1, "") + " " + <-cmiddle + " " + strings.Join(parts2sorted, "") + " " + lastpart
 
 	if checkbreak {
 		out = strings.ReplaceAll(out, "|{}|", "<br>")
@@ -83,4 +88,37 @@ func getText(tagname, innerhtml string) string {
 		out = strings.TrimLeft(out, "<br>")
 	}
 	return strings.Trim(out, " ")
+}
+
+func getMiddle(middle string, cmiddle chan string) chan string {
+
+	if !strings.Contains(middle, "<") {
+		return cmiddle
+	}
+
+	dm := ParseHTML(middle)
+
+	for _, t := range dm.Tag {
+
+		var closingtag string
+		closingtagIn := false
+
+		if strings.Contains(middle, "</"+t.tagname) {
+
+			closingtag = middle[strings.Index(middle, "</"+t.tagname):]
+			closingtag = closingtag[:strings.Index(closingtag, ">")+1]
+			closingtagIn = true
+		}
+
+		middle = strings.ReplaceAll(middle, t.tagcontent, "")
+		middle = strings.ReplaceAll(middle, t.innerHTML, "")
+		if closingtagIn {
+			middle = strings.ReplaceAll(middle, closingtag, "")
+		}
+
+	}
+
+	cmiddle <- strings.Trim(middle, " ")
+	return cmiddle
+
 }
