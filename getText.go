@@ -90,10 +90,10 @@ func getText(tagname, innerhtml string) string {
 	return strings.Trim(out, " ")
 }
 
-func getMiddle(middle string, cmiddle chan string) chan string {
+func getMiddle(middle string, cmiddle chan string) {
 
 	if !strings.Contains(middle, "<") {
-		return cmiddle
+		return
 	}
 
 	dm := ParseHTML(middle)
@@ -119,6 +119,5 @@ func getMiddle(middle string, cmiddle chan string) chan string {
 	}
 
 	cmiddle <- strings.Trim(middle, " ")
-	return cmiddle
 
 }
