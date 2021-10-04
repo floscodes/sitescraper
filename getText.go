@@ -111,7 +111,6 @@ func getMiddle(middle string, cmiddle chan string) {
 		}
 
 		middle = strings.ReplaceAll(middle, t.tagcontent, "")
-		middle = strings.ReplaceAll(middle, t.innerHTML, "")
 		if closingtagIn {
 			middle = strings.ReplaceAll(middle, closingtag, "")
 		}
