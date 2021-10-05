@@ -93,6 +93,7 @@ func getText(tagname, innerhtml string) string {
 func getMiddle(middle string, cmiddle chan string) {
 
 	if !strings.Contains(middle, "<") {
+		cmiddle <- middle
 		return
 	}
 
