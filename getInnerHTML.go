@@ -6,7 +6,14 @@ import (
 
 func getInnerHTML(tagname, html string) string {
 
-	firstpart := html[:strings.Index(html, "</"+tagname+">")+len("</"+tagname+">")]
+	if !strings.Contains(html, "</"+tagname) {
+		return html
+	}
+
+	closingtag := html[strings.Index(html, "</"+tagname):]
+	closingtag = closingtag[:strings.Index(closingtag, ">")+1]
+
+	firstpart := html[:strings.Index(html, closingtag)+len(closingtag)]
 
 	checkbreak := checkBreak(tagname, firstpart)
 	if checkbreak {
@@ -16,14 +23,14 @@ func getInnerHTML(tagname, html string) string {
 	appearance := strings.Count(firstpart, "<"+tagname)
 
 	if appearance < 1 {
-		if strings.LastIndex(firstpart, "</"+tagname+">") != -1 {
-			firstpart = firstpart[:strings.LastIndex(firstpart, "</"+tagname+">")]
+		if strings.LastIndex(firstpart, closingtag) != -1 {
+			firstpart = firstpart[:strings.LastIndex(firstpart, closingtag)]
 		}
 		return firstpart
 	}
 
 	//Cut away firstpart
-	html = html[strings.Index(html, "</"+tagname+">")+len("</"+tagname+">"):]
+	html = html[strings.Index(html, closingtag)+len(closingtag):]
 
 	var secondparts []string
 
@@ -37,8 +44,14 @@ func getInnerHTML(tagname, html string) string {
 			break
 		}
 
-		secondparts = append(secondparts, html[:strings.Index(html, "</"+tagname+">")+len("</"+tagname+">")])
-		html = html[strings.Index(html, "</"+tagname+">")+len("</"+tagname+">"):]
+		if !strings.Contains(html, "</"+tagname) {
+			break
+		}
+
+		closingtag = html[strings.Index(html, "</"+tagname):]
+		closingtag = closingtag[:strings.Index(closingtag, ">")+1]
+		secondparts = append(secondparts, html[:strings.Index(html, closingtag)+len(closingtag)])
+		html = html[strings.Index(html, closingtag)+len(closingtag):]
 
 		x = x + 1
 
@@ -50,8 +63,10 @@ func getInnerHTML(tagname, html string) string {
 		out = strings.ReplaceAll(out, "{||}", "<br>")
 	}
 
-	if strings.LastIndex(out, "</"+tagname+">") != -1 {
-		out = out[:strings.LastIndex(out, "</"+tagname+">")]
+	if strings.LastIndex(out, closingtag) != -1 {
+		closingtag = out[strings.Index(out, "</"+tagname):]
+		closingtag = closingtag[:strings.Index(closingtag, ">")+1]
+		out = out[:strings.LastIndex(out, closingtag)]
 	}
 
 	return out
