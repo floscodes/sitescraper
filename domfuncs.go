@@ -21,7 +21,7 @@ func (d Dom) Filter(filter ...string) Dom {
 	}
 
 	if filter[0] != "" && filter[0] != "*" {
-		d = d.tags(filter[0])
+		d = d.tag(filter[0])
 	}
 
 	if len(filter) < 2 {
@@ -42,38 +42,36 @@ func (d Dom) Filter(filter ...string) Dom {
 }
 
 //Returns a filtered Dom containing all Tags that have the given Tag-Name(s)
-func (d Dom) tags(tagname ...string) Dom {
+func (d Dom) tag(tagname string) Dom {
 	if len(tagname) < 1 {
 		return d
 	}
 	var tags []Tag
-	for _, N := range tagname {
-		for i, n := range d.Tag {
-			if n.tagname == N {
-				tags = append(tags, d.Tag[i])
-			}
+	for i, n := range d.Tag {
+		if n.tagname == tagname {
+			tags = append(tags, d.Tag[i])
 		}
 	}
+
 	var dm Dom
 	dm.Tag = append(dm.Tag, tags...)
 	return dm
 }
 
 //Returns a filtered Dom containing all Tags that contain the given Attribute(s)
-func (d Dom) attr(attr ...string) Dom {
+func (d Dom) attr(attr string) Dom {
 	if len(attr) < 1 {
 		return d
 	}
 	var tags []Tag
 
-	for _, N := range attr {
-		for _, n := range d.Tag {
-			if strings.Contains(n.tagcontent, N+`="`) || strings.Contains(n.tagcontent, N+`=`) {
-				tags = append(tags, n)
-			}
-
+	for _, n := range d.Tag {
+		if strings.Contains(n.tagcontent, attr+`="`) || strings.Contains(n.tagcontent, attr+`=`) {
+			tags = append(tags, n)
 		}
+
 	}
+
 	var dm Dom
 	dm.Tag = append(dm.Tag, tags...)
 	return dm
@@ -81,19 +79,17 @@ func (d Dom) attr(attr ...string) Dom {
 }
 
 //Returns a filtered Dom containing all Tags that contain the given Attribute-Value(s)
-func (d Dom) attrValue(attrvalue ...string) Dom {
+func (d Dom) attrValue(attrvalue string) Dom {
 	if len(attrvalue) < 1 {
 		return d
 	}
 	var tags []Tag
 
-	for _, N := range attrvalue {
-		for _, n := range d.Tag {
-			if strings.Contains(n.tagcontent, `="`+N+`"`) || strings.Contains(n.tagcontent, `=`+N+` `) || strings.Contains(n.tagcontent, `=`+N+`>`) || strings.Contains(n.tagcontent, `='`+N+`'>`) || strings.Contains(n.tagcontent, `='`+N+`'`) {
-				tags = append(tags, n)
-			}
-
+	for _, n := range d.Tag {
+		if strings.Contains(n.tagcontent, `="`+attrvalue+`"`) || strings.Contains(n.tagcontent, `=`+attrvalue+` `) || strings.Contains(n.tagcontent, `=`+attrvalue+`>`) || strings.Contains(n.tagcontent, `='`+attrvalue+`'>`) || strings.Contains(n.tagcontent, `='`+attrvalue+`'`) {
+			tags = append(tags, n)
 		}
+
 	}
 
 	var dm Dom
