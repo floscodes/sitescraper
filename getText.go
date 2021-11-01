@@ -16,7 +16,7 @@ func getText(tagname, innerhtml string) string {
 
 	checkbreak := checkBreak(tagname, innerhtml)
 	if checkbreak {
-		innerhtml = strings.ReplaceAll(innerhtml, "<br>", "|{}|")
+		innerhtml = strings.ReplaceAll(innerhtml, "<br>", breakSubst)
 	}
 
 	firstpart := innerhtml[:strings.Index(innerhtml, "<")]
@@ -82,11 +82,8 @@ func getText(tagname, innerhtml string) string {
 
 	out := firstpart + " " + strings.Join(parts1, "") + " " + <-cmiddle + " " + strings.Join(parts2sorted, "") + " " + lastpart
 
-	if checkbreak {
-		out = strings.ReplaceAll(out, "|{}|", "<br>")
-		out = strings.TrimRight(out, "<br>")
-		out = strings.TrimLeft(out, "<br>")
-	}
+	out = strings.ReplaceAll(out, breakSubst, "")
+
 	return strings.Trim(out, " ")
 }
 

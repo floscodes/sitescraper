@@ -15,9 +15,8 @@ func getInnerHTML(tagname, html string) string {
 
 	firstpart := html[:strings.Index(html, closingtag)+len(closingtag)]
 
-	checkbreak := checkBreak(tagname, firstpart)
-	if checkbreak {
-		firstpart = strings.ReplaceAll(firstpart, "<br", "{||}")
+	if checkBreak(tagname, firstpart) {
+		firstpart = strings.ReplaceAll(firstpart, "<br>", breakSubst)
 	}
 
 	appearance := strings.Count(firstpart, "<"+tagname)
@@ -59,10 +58,6 @@ func getInnerHTML(tagname, html string) string {
 	//firstpart added
 	out := firstpart + strings.Join(secondparts, "")
 
-	if checkbreak {
-		out = strings.ReplaceAll(out, "{||}", "<br>")
-	}
-
 	if strings.LastIndex(out, closingtag) != -1 {
 		closingtag = out[strings.Index(out, "</"+tagname):]
 		closingtag = closingtag[:strings.Index(closingtag, ">")+1]
@@ -81,3 +76,5 @@ func checkBreak(tagname, firstpart string) bool {
 	}
 	return false
 }
+
+const breakSubst string = "{|!!45sdhj26768892347|}"

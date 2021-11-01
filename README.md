@@ -1,6 +1,7 @@
-# Scraping Websites in Go!
+# sitescraper
+Scraping Websites in Go!
 
-## Examples:
+# Examples:
 
 ### Get InnerHTML:
 

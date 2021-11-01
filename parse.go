@@ -43,7 +43,7 @@ func fetch(html string) Dom {
 
 		//Check if string behing "<" is a valid tagname
 		if checkTagname(tagname) {
-			dm.Tag = append(dm.Tag, Tag{tagname, tagcontent, getInnerHTML(tagname, html)})
+			dm.Tag = append(dm.Tag, Tag{tagname, tagcontent, strings.ReplaceAll(getInnerHTML(tagname, html), breakSubst, "<br>")})
 		}
 	}
 
