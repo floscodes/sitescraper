@@ -1,4 +1,4 @@
-# Scraping Websites in Go!
+# Scraping Websites in Go! [![Go Reference](https://pkg.go.dev/badge/github.com/floscodes/sitescraper.svg)](https://pkg.go.dev/github.com/floscodes/sitescraper)
 
 
 ## Examples:
